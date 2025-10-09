@@ -1,5 +1,6 @@
 from datetime import datetime
 
+#Plantilla final para el envío de correos. Esta es la versión correcta. Falta eliminar únicamente los emojis y colores. 
 class ReporteManager:
     def __init__(self, incidencias_df):
         self.incidencias_df = incidencias_df
