@@ -5,8 +5,6 @@ Gestión de alertas de contrato
 
 from consultas_base.db_utils import DatabaseUtils
 from tkinter import messagebox
-from plantillas.template_mails import _generar_html_reporte_seleccionadas, _generar_html_reporte_por_jefe
-#from plantillas.template_mails import _generar_html_reporte_seleccionadas
 import win32com.client as win32
 import pythoncom
 import pandas as pd
