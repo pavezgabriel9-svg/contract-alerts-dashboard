@@ -13,21 +13,21 @@ class ReporteManager:
 
         if incidencias_empleado.empty:
             # Mensaje sobrio y claro cuando no hay incidencias
-            return "<p style='margin-left: 20px; color: #6c757d; font-style: italic; font-size: 13px;'>✅ Este colaborador/a no registra ausencias, permisos o licencias activas.</p>"
+            return "<p style='margin-left: 20px; color: #6c757d; font-style: italic; font-size: 13px; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; padding-top: 5px; padding-bottom: 5px;'>Este colaborador/a no registra ausencias, permisos o licencias activas.</p>"
 
         # Generar el HTML de la tabla de incidencias
         tabla_html = """
         <div style='margin-left: 20px; margin-top: 10px; margin-bottom: 20px;'>
             <h4 style='color: #2c3e50; border-left: 4px solid #f39c12; padding-left: 10px; font-size: 14px; margin-bottom: 10px;'>
-                📂 Permisos y Licencias Encontradas:
+                Permisos y Licencias Encontradas:
             </h4>
             
             <table style='width: 95%; border-collapse: collapse; margin-top: 5px; font-size: 12px; border: 1px solid #e0e0e0;'>
                 <thead>
                     <tr style='background-color: #34495e;'>
-                        <th style='padding: 8px 12px; border: none; color: white; text-align: left;'>Tipo de Permiso</th>
-                        <th style='padding: 8px 12px; border: none; color: white; text-align: left;'>Fecha Inicio</th>
-                        <th style='padding: 8px 12px; border: none; color: white; text-align: left;'>Fecha Fin</th>
+                        <th style='padding: 8px 12px; border: none; color: #333; text-align: left;'>Tipo de Permiso</th>
+                        <th style='padding: 8px 12px; border: none; color: #333; text-align: left;'>Fecha Inicio</th>
+                        <th style='padding: 8px 12px; border: none; color: #333; text-align: left;'>Fecha Fin</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,9 +42,9 @@ class ReporteManager:
             
             tabla_html += f"""
                     <tr style='{row_style}'>
-                        <td style='padding: 8px 12px; border-right: 1px solid #e0e0e0; border-bottom: 1px solid #e0e0e0;'>{row['Tipo_Permiso_Formateado']}</td>
-                        <td style='padding: 8px 12px; border-right: 1px solid #e0e0e0; border-bottom: 1px solid #e0e0e0;'>{row['fecha_inicio_formato']}</td>
-                        <td style='padding: 8px 12px; border-bottom: 1px solid #e0e0e0;'>{row['fecha_fin_formato']}</td>
+                        <td style='padding: 8px 12px; border-right: 1px solid #e0e0e0; border: 1px solid #e0e0e0;'>{row['Tipo_Permiso_Formateado']}</td>
+                        <td style='padding: 8px 12px; border-right: 1px solid #e0e0e0; border: 1px solid #e0e0e0;'>{row['fecha_inicio_formato']}</td>
+                        <td style='padding: 8px 12px; border: 1px solid #e0e0e0;'>{row['fecha_fin_formato']}</td>
                     </tr>
             """
             
@@ -100,34 +100,39 @@ class ReporteManager:
                 }}
                 /* Se añade un estilo para el título de la tabla de grupo */
                 .group-title {{
-                    border-bottom: 2px solid #adb5bd; /* Separador sutil */
-                    color: #1565c0; 
+                    background: #2e43ff;
+                    color: white; 
+                    font-weight: bold;
+                    font-size: 1.1em;
+                    border: 2px solid #adb5bd; /* Separador sutil */
                     margin-top: 30px;
-                    padding-bottom: 5px;
+                    padding: 15px 0;
+                    text-align: center;
                 }}
 
                 /* ESTILOS DE TABLA */
-                table {{
-                    width: 100%;
+                .alerta-tabla {{
+                    width: fit-content;
                     border-collapse: collapse;
-                    margin-top: 15px; 
-                    margin-bottom: 30px; 
+                    margin-top: 5px; 
+                    margin-bottom: 10px; 
+                    border: 1px solid #ccc;
                 }}
-                th, td {{
-                    padding: 12px;
+                .alerta-tabla th, .alerta-tabla td {{
+                    padding: 6px 25px;
                     text-align: left;
-                    border-bottom: 1px solid #ddd;
+                    border: 1px solid #ddd;
                 }}
-                th {{
-                    background-color: #007bff;
-                    color: white;
+                .alerta-tabla th {{
+                    background-color: transparent;
+                    color: #333;
                     font-weight: bold;
                 }}
                 /* Alternancia de filas */
-                tr:nth-child(odd) {{
+                .alerta-tabla tr:nth-child(odd) {{
                     background-color: #ffffff;
                 }}
-                tr:nth-child(even) {{
+                .alerta-tabla tr:nth-child(even) {{
                     background-color: #f8f9fa;
                 }}
                 
@@ -146,8 +151,8 @@ class ReporteManager:
                     color: #856404;
                 }}
                 .indefinido {{
-                    background: #dee2e6; /* Gris claro para el tag Indefinido */
-                    color: #495057; 
+                    background: #fff3cd; /* Gris claro para el tag Indefinido */
+                    color: #856404; 
                 }}
                 
                 /* Estilo para filas de incidencia */
@@ -159,28 +164,19 @@ class ReporteManager:
                 
                 /* Estilos generales */
                 .header {{ text-align: center; border-bottom: 3px solid #007bff; padding-bottom: 20px; margin-bottom: 30px; }}
-                .header h1 {{ color: #007bff; margin: 0; font-size: 28px; }}
-                .jefe-info {{ background: #e3f2fd; padding: 15px; border-radius: 6px; margin-bottom: 25px; }}
-                .jefe-info h2 {{ margin: 0; color: #1565c0; }}
-                .summary {{ background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 6px; margin-bottom: 25px; }}
+                .header h1 {{ color: #2e43ff; margin: 0; font-size: 28px; }}
+                .jefe-info {{ background: #f7f8f8; padding: 15px; border-radius: 6px; margin-bottom: 25px; }}
+                .jefe-info h2 {{ margin: 0; color: #2e43ff; }}
+                .summary {{ border: 1px solid #ffeaa7; padding: 15px; border-radius: 6px; margin-bottom: 25px; }}
                 .footer {{ margin-top: 30px; padding-top: 20px; border-top: 2px solid #dee2e6; text-align: center; color: #6c757d; font-size: 14px; }}
 
             </style>
         </head>
         <body>
-            <div class="container">
-                <div class="header">
-                    <h1>⚠️ Alertas de Contratos</h1>
-                    <p>Empleados que requieren atención inmediata</p>
-                </div>
-                
                 <div class="jefe-info">
-                    <h2>👤 {nombre_jefe}</h2>
-                    <p>Los siguientes empleados bajo su supervisión requieren atención:</p>
-                </div>
-                
-                <div class="summary">
-                    <strong>📊 Resumen:</strong> {len(empleados_data)} empleado(s) requieren revisión de contrato
+                    <p>¡Hola {nombre_jefe}!</p>
+                    <p>Junto con saludar, notificamos los siguientes vencimientos de contrato:</p>
+                    <p>(*) Indicar su decisión en la columna "Renovar"</p>
                 </div>
                 
         """
@@ -192,15 +188,15 @@ class ReporteManager:
             
             # 3.1. Encabezado del grupo (Tabla)
             html += f"""
-                <h3 class="group-title">Motivo: {motivo} ({len(grupo_empleados)} Empleado(s))</h3>
-                
-                <table>
+                <h3 class="group-title">{motivo}</h3>
+
+                <table class="alerta-tabla">
                     <thead>
                         <tr>
-                            <th>👤 Empleado</th>
-                            <th>💼 Cargo</th>
-                            <th>📅 Fecha Inicio</th>
-                            <th>📝 Tipo Alerta</th>
+                            <th style="width: 10%;">Renovar (*)</th>
+                            <th style="width: 40%;">Empleado</th>
+                            <th style="width: 30%;">Cargo</th>
+                            <th style="width: 20%;">Fecha Vencimiento</th>
                             </tr>
                     </thead>
                     <tbody>
@@ -217,10 +213,10 @@ class ReporteManager:
                 
                 html += f"""
                     <tr class="{clase_fila}">
-                        <td><strong>{emp['empleado']}</strong></td>
-                        <td>{emp['cargo']}</td>
-                        <td>{emp['fecha_inicio']}</td>
-                        <td><span class="tipo-alerta {clase_tipo}">{emp['tipo_alerta']}</span></td>
+                        <td style="width: 10%;"></td> <!-- Columna para "Renovar (*)", inicialmente vacía -->
+                        <td style="width: 40%;"><strong>{emp['empleado']}</strong></td>
+                        <td style="width: 30%;">{emp['cargo']}</td>
+                        <td style="width: 20%;">{emp['fecha_alerta']}</td> <!-- Cambio realizado desde fecha_inicio -->
                     </tr>
                 """
                 
@@ -245,10 +241,9 @@ class ReporteManager:
         # 4. CIERRE DEL HTML (Footer)
         html += """
                 <div class="footer">
-                    <p><strong>⏰ Acción requerida:</strong> Por favor revise y tome las acciones necesarias para estos contratos.</p>
-                    <p>📧 Este es un correo automático generado por el Sistema de Alertas de Contratos</p>
+                    <p>Correo generado por el Sistema de Alertas de Contratos</p>
                     <hr>
-                    <small>Para consultas, contacte al área de Recursos Humanos</small>
+                    <small>Para consultas, contacte al área de Recursos Humanos o responda este correo.</small>
                 </div>
             </div>
         </body>
