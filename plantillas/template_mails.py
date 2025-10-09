@@ -101,6 +101,7 @@ class ReporteManager:
                 /* Se añade un estilo para el título de la tabla de grupo */
                 .group-title {{
                     background: #2e43ff;
+                    width: fit-content;
                     color: white; 
                     font-weight: bold;
                     font-size: 1.1em;
