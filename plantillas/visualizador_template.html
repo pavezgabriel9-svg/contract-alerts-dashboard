@@ -1,141 +1,103 @@
-<html>
-    <head>
-        <style>
-            body { 
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-                margin: 0; 
-                padding: 20px; 
-                line-height: 1.6; 
-                color: #333;
-                background-color: #f5f5f5;
-            }
-            .email-container {
-                max-width: 800px;
-                margin: 0 auto;
-                background-color: white;
-                border-radius: 10px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                overflow: hidden;
-            }
-            .header {
-                background: linear-gradient(135deg, #2c3e50, #34495e);
-                color: white;
-                padding: 30px 25px;
-                text-align: center;
-            }
-            .header h2 {
-                margin: 0;
-                font-size: 1.8em;
-                font-weight: 300;
-                letter-spacing: 0.5px;
-            }
-            .header p {
-                margin: 8px 0 0 0;
-                opacity: 0.9;
-                font-size: 0.95em;
-            }
-            .content {
-                padding: 30px 25px;
-            }
-            .resumen {
-                background-color: #f8f9fa;
-                border-left: 4px solid #3498db;
-                padding: 20px;
-                margin-bottom: 25px;
-                border-radius: 0 8px 8px 0;
-            }
-            .resumen h3 {
-                margin: 0 0 15px 0;
-                color: #2c3e50;
-                font-size: 1.2em;
-                font-weight: 500;
-            }
-            .resumen p {
-                margin: 8px 0;
-                color: #555;
-            }
-            .saludo {
-                margin-bottom: 20px;
-                color: #2c3e50;
-            }
-            .alerta-container {
-                border: 1px solid #e1e8ed;
-                border-radius: 8px;
-                padding: 20px;
-                margin-bottom: 20px;
-                background-color: #fafafa;
-            }
-            .alerta-header {
-                font-weight: 600;
-                font-size: 1.1em;
-                color: #2c3e50;
-                margin-bottom: 15px;
-                padding-bottom: 8px;
-                border-bottom: 2px solid #ecf0f1;
-            }
-            .urgente {
-                background-color: #fff5f5;
-                border-left: 4px solid #e74c3c;
-            }
-            .vencida {
-                background-color: #fdf2f2;
-                border-left: 4px solid #c53030;
-            }
-            table {
-                border-collapse: collapse;
-                width: 100%;
-                margin-top: 15px;
-                border-radius: 6px;
-                overflow: hidden;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            }
-            th, td {
-                padding: 12px 15px;
-                text-align: left;
-                border-bottom: 1px solid #e1e8ed;
-            }
-            th {
-                background-color: #34495e;
-                color: white;
-                font-weight: 500;
-                text-transform: uppercase;
-                font-size: 0.85em;
-                letter-spacing: 0.5px;
-            }
-            td {
-                background-color: white;
-            }
-            tr:hover td {
-                background-color: #f8f9fa;
-            }
-            .footer {
-                background-color: #34495e;
-                color: white;
-                padding: 20px 25px;
-                font-size: 0.9em;
-                text-align: center;
-                opacity: 0.9;
-            }
-        </style>
-    </head>
-    <body>
-        {modo_texto}
-        
-        <div class="email-container">
-            <div class="header">
-                <h2>Alertas de Contratos</h2>
-                <p>Notificación de alertas pendientes para su equipo</p>
-            </div>
-            
-            <div class="content">
-                <div class="saludo">
-                    <p>Estimado/a <strong>{jefe}</strong>,</p>
-                    <p>Por medio de la presente, le informamos que existen <strong>{len(alertas_jefe)} alerta(s)</strong> de contratos que requieren su atención y revisión:</p>
-                </div>
-                <div class="resumen">
-                    <h3>Resumen Ejecutivo</h3>
-                    <p><strong>Total de alertas:</strong> {len(alertas_jefe)}</p>
-                    <p><strong>Colaboradores involucrados:</strong> {', '.join(alertas_jefe['Empleado'].tolist())}</p>
-                    <p><strong>Fecha de término:</strong> {datetime.now().strftime('%d/%m/%Y %H:%M')}</p>
-                </div>
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <!-- <title>Alertas de Contratos</title> -->
+            <style>
+                /* ... (Tus estilos CSS) ... */
+                body {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                    margin: 0;
+                    padding: 20px;
+                    background-color: #f8f9fa;
+                }
+                .container {
+                    max-width: 800px;
+                    margin: 0 auto;
+                    background: white;
+                    padding: 30px;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                }
+                /* Se añade un estilo para el título de la tabla de grupo */
+                .group-title {
+                    border-bottom: 2px solid #adb5bd; /* Separador sutil */
+                    color: #2e43ff; 
+                    margin-top: 30px;
+                    padding-bottom: 5px;
+                }
 
+                /* ESTILOS DE TABLA */
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 15px; 
+                    margin-bottom: 30px; 
+                }
+                th, td {
+                    padding: 12px;
+                    text-align: left;
+                    border-bottom: 1px solid #ddd;
+                }
+                th {
+                    background-color: #dc3545;
+                    color: white;
+                    font-weight: bold;
+                }
+                /* Alternancia de filas */
+                tr:nth-child(odd) {
+                    background-color: #ffffff;
+                }
+                tr:nth-child(even) {
+                    background-color: #f8f9fa;
+                }
+                
+                /* Colores de Alerta Actualizados */
+                .urgente {
+                    background-color: #f7f7f7 !important; /* Gris muy claro para fila Indefinido */
+                }
+                .tipo-alerta {
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    font-size: 12px;
+                    font-weight: bold;
+                }
+                .segundo-plazo {
+                    background: #fff3cd;
+                    color: #856404;
+                }
+                .indefinido {
+                    background: #fff3cd; /* Gris claro para el tag Indefinido */
+                    color: #856404; 
+                }
+                
+                /* Estilo para filas de incidencia */
+                .incidencia-row td {
+                    padding: 0;
+                    border: none;
+                    background-color: #f8f9fa; 
+                }
+                
+                /* Estilos generales */
+                .header { text-align: center; border-bottom: 3px solid #007bff; padding-bottom: 20px; margin-bottom: 30px; }
+                .header h1 { color: #dc3545; margin: 0; font-size: 28px; }
+                .jefe-info { background: #f7f8f8; padding: 15px; border-radius: 6px; margin-bottom: 25px; }
+                .jefe-info h2 { margin: 0; color: #dc3545; }
+                .summary { border: 1px solid #ffeaa7; padding: 15px; border-radius: 6px; margin-bottom: 25px; }
+                .footer { margin-top: 30px; padding-top: 20px; border-top: 2px solid #dee2e6; text-align: center; color: #6c757d; font-size: 14px; }
+
+            </style>
+        </head>
+        <body>
+            <!--<div class="container">
+                <div class="header">
+                    <h1>⚠️ Alertas de Contratos</h1> 
+                    <p>Empleados que requieren atención inmediata</p>
+                </div>-->
+                
+                <div class="jefe-info">
+                    <h2>¡Hola {nombre_jefe}!</h2>
+                    <p>Junto con saludar, notificamos los siguientes vencimientos de contrato:</p>
+                </div>
