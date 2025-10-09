@@ -26,10 +26,17 @@ class DatabaseUtils:
         """Obtiene los datos de alertas desde la base de datos bases/contract_alerts"""
         sql = """
         SELECT 
-            employee_name, employee_rut, employee_role,
-            boss_name, boss_email,
-            alert_date, alert_reason, expiration,
-            days_since_start, employee_start_date,
+            employee_name, 
+            employee_rut, 
+            employee_role,
+            boss_name, 
+            boss_email,
+            boss_of_boss_email,
+            DATE_FORMAT(alert_date, '%d-%m-%Y') AS alert_date,
+            alert_reason, 
+            expiration,
+            days_since_start, 
+            employee_start_date,
             alert_type
         FROM contract_alerts 
         WHERE 
@@ -43,7 +50,7 @@ class DatabaseUtils:
                 with conexion.cursor() as cursor:
                     cursor.execute(sql)
                     filas_alertas = cursor.fetchall()
-            columnas = ["Empleado", "RUT", "Cargo", "Jefe", "Email Jefe",
+            columnas = ["Empleado", "RUT", "Cargo", "Jefe", "Email Jefe", "Email Jefe del Jefe",
                     "Fecha alerta", "Motivo", "Vencimiento", "Días desde inicio", "Fecha Vencimiento",
                     "Tipo Alerta"]
             return pd.DataFrame(filas_alertas, columns=columnas)
