@@ -58,7 +58,6 @@ class DatabaseUtils:
                 rut_empleado,
                 fecha_inicio,
                 fecha_fin,
-<<<<<<< HEAD
                 DATE_FORMAT(fecha_inicio, '%d-%m-%Y') AS fecha_inicio_formato,
                 DATE_FORMAT(fecha_fin, '%d-%m-%Y') AS fecha_fin_formato,
                 tipo_permiso AS tipo_permiso_original,
@@ -68,21 +67,13 @@ class DatabaseUtils:
                 ) AS Tipo_Permiso_Formateado
                 
             FROM consolidado_incidencias;
-=======
-                tipo_permiso
-            FROM consolidado_incidencias
->>>>>>> eeebc474cb24e76c10d234d7085f8208097a3ba3
         """
         try:
             with self.conectar_bd() as conexion:
                 with conexion.cursor() as cursor:
                     cursor.execute(sql)
                     rows = cursor.fetchall()
-<<<<<<< HEAD
             cols = ["rut_empleado", "fecha_inicio", "fecha_fin", "fecha_inicio_formato", "fecha_fin_formato", "tipo_permiso", "Tipo_Permiso_Formateado"]
-=======
-            cols = ["rut_empleado", "fecha_inicio", "fecha_fin", "tipo_permiso"]
->>>>>>> eeebc474cb24e76c10d234d7085f8208097a3ba3
             return pd.DataFrame(rows, columns=cols)
         except Exception as e:
             print(f"Error obteniendo incidencias: {e}")
