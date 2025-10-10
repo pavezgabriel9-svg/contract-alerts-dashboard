@@ -29,6 +29,7 @@ class DatabaseUtils:
             employee_name, 
             employee_rut, 
             employee_role,
+            email,
             boss_name, 
             boss_email,
             boss_of_boss_email,
@@ -43,6 +44,8 @@ class DatabaseUtils:
             NOT (alert_type = 'INDEFINIDO' AND second_alert_sent != 0)
         AND 
             NOT (alert_type = 'SEGUNDO_PLAZO' AND first_alert_sent != 0)
+		AND
+			alert_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 9 DAY)
         ORDER BY alert_date ASC
         """
         try:
@@ -50,7 +53,7 @@ class DatabaseUtils:
                 with conexion.cursor() as cursor:
                     cursor.execute(sql)
                     filas_alertas = cursor.fetchall()
-            columnas = ["Empleado", "RUT", "Cargo", "Jefe", "Email Jefe", "Email Jefe del Jefe",
+            columnas = ["Empleado", "RUT", "Cargo", "Email", "Jefe", "Email Jefe", "Email Jefe del Jefe",
                     "Fecha alerta", "Motivo", "Vencimiento", "Días desde inicio", "Fecha Vencimiento",
                     "Tipo Alerta"]
             return pd.DataFrame(filas_alertas, columns=columnas)
