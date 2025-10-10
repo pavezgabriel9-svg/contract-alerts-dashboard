@@ -25,9 +25,9 @@ class ReporteManager:
             <table style='width: 95%; border-collapse: collapse; margin-top: 5px; font-size: 12px; border: 1px solid #e0e0e0;'>
                 <thead>
                     <tr style='background-color: #34495e;'>
-                        <th style='padding: 8px 12px; border: none; color: #333; text-align: left;'>Tipo de Permiso</th>
-                        <th style='padding: 8px 12px; border: none; color: #333; text-align: left;'>Fecha Inicio</th>
-                        <th style='padding: 8px 12px; border: none; color: #333; text-align: left;'>Fecha Fin</th>
+                        <th style='padding: 8px 12px; border: 1px solid #ccc; color: #333; text-align: left;'>Tipo de Permiso</th>
+                        <th style='padding: 8px 12px; border: 1px solid #ccc; color: #333; text-align: left;'>Fecha Inicio</th>
+                        <th style='padding: 8px 12px; border: 1px solid #ccc; color: #333; text-align: left;'>Fecha Fin</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -177,7 +177,7 @@ class ReporteManager:
                 <div class="jefe-info">
                     <p>¡Hola {nombre_jefe}!</p>
                     <p>Junto con saludar, notificamos los siguientes vencimientos de contrato:</p>
-                    <p>(*) Indicar su decisión en la columna "Renovar"</p>
+                    <p>(*) Rellenar la columna <strong>"Renovar"</strong> con su respuesta <strong>(Si/No)</strong></p>
                 </div>
                 
         """
@@ -214,7 +214,7 @@ class ReporteManager:
                 
                 html += f"""
                     <tr class="{clase_fila}">
-                        <td style="width: 10%;"></td> <!-- Columna para "Renovar (*)", inicialmente vacía -->
+                        <td style="width: 10%; background-color: #FFDDC1;"></td> <!-- Columna para "Renovar (*)", inicialmente vacía -->
                         <td style="width: 40%;"><strong>{emp['empleado']}</strong></td>
                         <td style="width: 30%;">{emp['cargo']}</td>
                         <td style="width: 20%;">{emp['fecha_alerta']}</td> <!-- Cambio realizado desde fecha_inicio -->
