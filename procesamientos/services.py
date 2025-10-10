@@ -239,12 +239,13 @@ def enviar_alertas_seleccionadas_por_jefe(app, jefes_filtro=None):
                     'empleado': emp_data['Empleado'],
                     'rut': rut,
                     'cargo': emp_data['Cargo'],
-                    # Ajusta 'Fecha Vencimiento' a la columna correcta si es necesario
+                    'email': emp_data['Email'] if 'Email' in emp_data else 'N/A',
                     'fecha_alerta': emp_data.get('Fecha alerta', 'N/A'), #Cambio realizado desde fecha_inicio
                     'motivo': emp_data['Motivo'],
                     'tipo_alerta': tipo_alerta
                 })
                 ruts_procesados.append((rut, tipo_alerta))
+                print(f"  - Agregado: {emp_data['Empleado']} (RUT: {rut}, Tipo: {tipo_alerta}), Mail: {emp_data['Email'] if 'Email' in emp_data else 'N/A'}")
 
         def obtener_fecha_valida(empleado):
             fecha_str = empleado['fecha_alerta']
@@ -264,6 +265,22 @@ def enviar_alertas_seleccionadas_por_jefe(app, jefes_filtro=None):
 
         email_enviado = False
         report_generator = ReporteManager(app.incidencias_df)
+        lista_copia = ["DMISRAJI@cramer.cl", "bgacitua@cramer.cl", "gpavez@cramer.cl", "navalos@cramer.cl", "ccisternas@cramer.cl", "jguinez@cramer.cl", "lgarcia@cramer.cl"]
+
+        copia_final = lista_copia.copy()
+
+        #Eliminar correo del empleado que genera la alerta de la lista de copia
+        if emp_data['Email'] in copia_final:
+            copia_final.remove(emp_data['Email'])
+
+        # Eliminar el correo del jefe de la lista de copia si está presente
+        if email_jefe in copia_final:
+            copia_final.remove(email_jefe)
+        
+        if email_jefe_jefe in copia_final:
+            copia_final.remove(email_jefe_jefe)
+
+        mail_copia_formateados_final = "; ".join(copia_final)
 
         try:
             print(f"Enviando correo consolidado...")
@@ -272,11 +289,11 @@ def enviar_alertas_seleccionadas_por_jefe(app, jefes_filtro=None):
             pythoncom.CoInitialize()
             outlook = win32.Dispatch("outlook.application")
             mail = outlook.CreateItem(0)
-            mail.To = 'bgacitua@cramer.cl'  # Modo prueba
-            mail.CC = "gpavez@cramer.cl"
-            #mail.To = email_jefe  # Modo real
-            #mail.CC = email_jefe_jefe
-            mail.Subject = f"Alertas de contratos - {len(empleados_jefe)} empleado(s) requieren atención"
+            #mail.To = 'navalos@cramer.cl'  # Modo prueba
+            #mail.CC = f"{mail_prueba_jefes}; {mail_prueba_formateados_final}"
+            mail.To = email_jefe  # Modo real
+            mail.CC = f"{email_jefe_jefe}; {mail_copia_formateados_final}"
+            mail.Subject = f"(ESTO ES UNA PRUEBA) :) - Alertas de contratos - {len(empleados_jefe)} empleado(s) requieren atención"
             html = report_generator._generar_html_reporte_por_jefe(nombre_jefe, empleados_jefe_ordenados)
             mail.HTMLBody = html
             mail.Send()
