@@ -40,12 +40,12 @@ class DatabaseUtils:
             employee_start_date,
             alert_type
         FROM contract_alerts 
-        WHERE 
+        WHERE
             NOT (alert_type = 'INDEFINIDO' AND second_alert_sent != 0)
         AND 
             NOT (alert_type = 'SEGUNDO_PLAZO' AND first_alert_sent != 0)
 		AND
-			alert_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 9 DAY)
+			alert_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 15 DAY)
         ORDER BY alert_date ASC
         """
         try:
