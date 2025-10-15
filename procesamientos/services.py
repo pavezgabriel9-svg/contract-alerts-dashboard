@@ -11,7 +11,7 @@ import pandas as pd
 from plantillas.template_mails import ReporteManager
 from datetime import datetime
 
-db = DatabaseUtils()
+db = DatabaseUtils()    
 
 def cargar_alertas(app):
     """Carga las alertas desde la BD y actualiza la interfaz"""
@@ -150,8 +150,8 @@ def enviar_alertas_seleccionadas_por_jefe(app, jefes_filtro=None):
         report_generator = ReporteManager(app.incidencias_df)
 
         #Falta agregar al Big Boss. Modificar cuando entre en producción.
-        lista_copia = ["DMISRAJI@cramer.cl", "bgacitua@cramer.cl", "gpavez@cramer.cl", "navalos@cramer.cl", "ccisternas@cramer.cl", "jguinez@cramer.cl", "lgarcia@cramer.cl"]
-
+        lista_copia = ["DMISRAJI@cramer.cl", "bgacitua@cramer.cl", "gpavez@cramer.cl", "navalos@cramer.cl", "ccisternas@cramer.cl", "jguinez@cramer.cl", "lgarcia@cramer.cl", "eleon@cramer.cl", "nconstanzo@cramer.cl", "ABB@cramer.cl"]
+        #lista_copia = ["bgacitua@cramer.cl", "gpavez@cramer.cl"] 
         copia_final = lista_copia.copy()
 
         #Eliminar correo del empleado que genera la alerta de la lista de copia
@@ -177,7 +177,7 @@ def enviar_alertas_seleccionadas_por_jefe(app, jefes_filtro=None):
             #mail.CC = f"{mail_prueba_jefes}; {mail_prueba_formateados_final}" # Modo prueba
             mail.To = email_jefe 
             mail.CC = f"{email_jefe_jefe}; {mail_copia_formateados_final}"
-            mail.Subject = f"(ESTO ES UNA PRUEBA) :) - Alertas de contratos - {len(empleados_jefe)} empleado(s) requieren atención"
+            mail.Subject = f"Alertas de contratos - {len(empleados_jefe)} empleado(s) requieren atención"
             html = report_generator._generar_html_reporte_por_jefe(nombre_jefe, empleados_jefe_ordenados)
             mail.HTMLBody = html
             mail.Send()
