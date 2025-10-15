@@ -175,7 +175,7 @@ class ReporteManager:
         </head>
         <body>
                 <div class="jefe-info">
-                    <p>¡Hola {nombre_jefe}!</p>
+                    <p>Buenos días {nombre_jefe}:</p>
                     <p>Junto con saludar, notificamos los siguientes vencimientos de contrato:</p>
                     <p>(*) Rellenar la columna <strong>"Renovar"</strong> con su respuesta <strong>(Si/No)</strong></p>
                 </div>
@@ -194,10 +194,10 @@ class ReporteManager:
                 <table class="alerta-tabla">
                     <thead>
                         <tr>
-                            <th style="width: 10%;">Renovar (*)</th>
                             <th style="width: 40%;">Empleado</th>
                             <th style="width: 30%;">Cargo</th>
                             <th style="width: 20%;">Fecha Vencimiento</th>
+                            <th style="width: 10%;">Renovar (*)</th>
                             </tr>
                     </thead>
                     <tbody>
@@ -210,14 +210,13 @@ class ReporteManager:
                 
                 # Estilos de fila y etiqueta
                 clase_fila = "urgente" if emp['tipo_alerta'] == 'INDEFINIDO' else ""
-                clase_tipo = "indefinido" if emp['tipo_alerta'] == 'INDEFINIDO' else "segundo-plazo"
                 
                 html += f"""
                     <tr class="{clase_fila}">
-                        <td style="width: 10%; background-color: #FFDDC1;"></td> <!-- Columna para "Renovar (*)", inicialmente vacía -->
                         <td style="width: 40%;"><strong>{emp['empleado']}</strong></td>
                         <td style="width: 30%;">{emp['cargo']}</td>
                         <td style="width: 20%;">{emp['fecha_alerta']}</td> <!-- Cambio realizado desde fecha_inicio -->
+                        <td style="width: 10%; background-color: #FFDDC1;"></td> <!-- Columna para "Renovar (*)", inicialmente vacía -->
                     </tr>
                 """
                 
