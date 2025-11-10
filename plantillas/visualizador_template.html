@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <!-- <title>Alertas de Contratos</title> -->
+            <style>
+                /* ... (Tus estilos CSS) ... */
+                body {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                    margin: 0;
+                    padding: 20px;
+                    background-color: #f8f9fa;
+                }
+                .container {
+                    max-width: 800px;
+                    margin: 0 auto;
+                    background: white;
+                    padding: 30px;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                }
+                /* Se añade un estilo para el título de la tabla de grupo */
+                .group-title {
+                    border-bottom: 2px solid #adb5bd; /* Separador sutil */
+                    color: #2e43ff; 
+                    margin-top: 30px;
+                    padding-bottom: 5px;
+                }
+
+                /* ESTILOS DE TABLA */
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 15px; 
+                    margin-bottom: 30px; 
+                }
+                th, td {
+                    padding: 12px;
+                    text-align: left;
+                    border-bottom: 1px solid #ddd;
+                }
+                th {
+                    background-color: #dc3545;
+                    color: white;
+                    font-weight: bold;
+                }
+                /* Alternancia de filas */
+                tr:nth-child(odd) {
+                    background-color: #ffffff;
+                }
+                tr:nth-child(even) {
+                    background-color: #f8f9fa;
+                }
+                
+                /* Colores de Alerta Actualizados */
+                .urgente {
+                    background-color: #f7f7f7 !important; /* Gris muy claro para fila Indefinido */
+                }
+                .tipo-alerta {
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    font-size: 12px;
+                    font-weight: bold;
+                }
+                .segundo-plazo {
+                    background: #fff3cd;
+                    color: #856404;
+                }
+                .indefinido {
+                    background: #fff3cd; /* Gris claro para el tag Indefinido */
+                    color: #856404; 
+                }
+                
+                /* Estilo para filas de incidencia */
+                .incidencia-row td {
+                    padding: 0;
+                    border: none;
+                    background-color: #f8f9fa; 
+                }
+                
+                /* Estilos generales */
+                .header { text-align: center; border-bottom: 3px solid #007bff; padding-bottom: 20px; margin-bottom: 30px; }
+                .header h1 { color: #dc3545; margin: 0; font-size: 28px; }
+                .jefe-info { background: #f7f8f8; padding: 15px; border-radius: 6px; margin-bottom: 25px; }
+                .jefe-info h2 { margin: 0; color: #dc3545; }
+                .summary { border: 1px solid #ffeaa7; padding: 15px; border-radius: 6px; margin-bottom: 25px; }
+                .footer { margin-top: 30px; padding-top: 20px; border-top: 2px solid #dee2e6; text-align: center; color: #6c757d; font-size: 14px; }
+
+            </style>
+        </head>
+        <body>
+            <!--<div class="container">
+                <div class="header">
+                    <h1>⚠️ Alertas de Contratos</h1> 
+                    <p>Empleados que requieren atención inmediata</p>
+                </div>-->
+                
+                <div class="jefe-info">
+                    <h2>¡Hola {nombre_jefe}!</h2>
+                    <p>Junto con saludar, notificamos los siguientes vencimientos de contrato:</p>
+                </div>

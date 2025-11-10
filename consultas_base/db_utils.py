@@ -26,16 +26,26 @@ class DatabaseUtils:
         """Obtiene los datos de alertas desde la base de datos bases/contract_alerts"""
         sql = """
         SELECT 
-            employee_name, employee_rut, employee_role,
-            boss_name, boss_email,
-            alert_date, alert_reason, expiration,
-            days_since_start, employee_start_date,
+            employee_name, 
+            employee_rut, 
+            employee_role,
+            email,
+            boss_name, 
+            boss_email,
+            boss_of_boss_email,
+            DATE_FORMAT(alert_date, '%d-%m-%Y') AS alert_date,
+            alert_reason, 
+            expiration,
+            days_since_start, 
+            employee_start_date,
             alert_type
         FROM contract_alerts 
-        WHERE 
+        WHERE
             NOT (alert_type = 'INDEFINIDO' AND second_alert_sent != 0)
         AND 
             NOT (alert_type = 'SEGUNDO_PLAZO' AND first_alert_sent != 0)
+		AND
+			alert_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 15 DAY)
         ORDER BY alert_date ASC
         """
         try:
@@ -43,7 +53,7 @@ class DatabaseUtils:
                 with conexion.cursor() as cursor:
                     cursor.execute(sql)
                     filas_alertas = cursor.fetchall()
-            columnas = ["Empleado", "RUT", "Cargo", "Jefe", "Email Jefe",
+            columnas = ["Empleado", "RUT", "Cargo", "Email", "Jefe", "Email Jefe", "Email Jefe del Jefe",
                     "Fecha alerta", "Motivo", "Vencimiento", "Días desde inicio", "Fecha Vencimiento",
                     "Tipo Alerta"]
             return pd.DataFrame(filas_alertas, columns=columnas)
@@ -51,26 +61,33 @@ class DatabaseUtils:
             print(f"Error obteniendo alertas: {e}")
             return pd.DataFrame()
     
-    # def obtener_incidencias(self):
-    #     """Obtiene incidencias desde la base"""
-    #     sql = """
-    #         SELECT
-    #             rut_empleado,
-    #             fecha_inicio,
-    #             fecha_fin,
-    #             tipo_permiso
-    #         FROM consolidado_incidencias
-    #     """
-    #     try:
-    #         with self.conectar_bd() as conexion:
-    #             with conexion.cursor() as cursor:
-    #                 cursor.execute(sql)
-    #                 rows = cursor.fetchall()
-    #         cols = ["rut_empleado", "fecha_inicio", "fecha_fin", "tipo_permiso"]
-    #         return pd.DataFrame(rows, columns=cols)
-    #     except Exception as e:
-    #         print(f"Error obteniendo incidencias: {e}")
-    #         return pd.DataFrame()
+    def obtener_incidencias(self):
+        """Obtiene incidencias desde la base"""
+        sql = """
+            SELECT
+                rut_empleado,
+                fecha_inicio,
+                fecha_fin,
+                DATE_FORMAT(fecha_inicio, '%d-%m-%Y') AS fecha_inicio_formato,
+                DATE_FORMAT(fecha_fin, '%d-%m-%Y') AS fecha_fin_formato,
+                tipo_permiso AS tipo_permiso_original,
+                CONCAT(
+                    UPPER(LEFT(REPLACE(tipo_permiso, '_', ' '), 1)), -- Primera letra en MAYÚS
+                    LOWER(SUBSTRING(REPLACE(tipo_permiso, '_', ' '), 2)) -- El resto en minús
+                ) AS Tipo_Permiso_Formateado
+                
+            FROM consolidado_incidencias;
+        """
+        try:
+            with self.conectar_bd() as conexion:
+                with conexion.cursor() as cursor:
+                    cursor.execute(sql)
+                    rows = cursor.fetchall()
+            cols = ["rut_empleado", "fecha_inicio", "fecha_fin", "fecha_inicio_formato", "fecha_fin_formato", "tipo_permiso", "Tipo_Permiso_Formateado"]
+            return pd.DataFrame(rows, columns=cols)
+        except Exception as e:
+            print(f"Error obteniendo incidencias: {e}")
+            return pd.DataFrame()
         
     def obtener_tipo_alerta(self, employee_rut):
         """
